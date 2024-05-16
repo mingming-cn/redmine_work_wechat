@@ -1,5 +1,5 @@
 <% flash.now[:error] = "#{l("corpid")} #{l("activerecord.errors.messages.blank")}" if @settings['corpid'].blank? %>
-<% flash.now[:error] = "#{l("agentId")} #{l("activerecord.errors.messages.blank")}" if @settings['agentId'].blank? %>
+<% flash.now[:error] = "#{l("agentid")} #{l("activerecord.errors.messages.blank")}" if @settings['agentid'].blank? %>
 <% flash.now[:error] = "#{l("secret")} #{l("activerecord.errors.messages.blank")}" if @settings['secret'].blank? %>
 
 <p>
@@ -18,4 +18,9 @@
 <p>
   <label><%= l(:label_secret) %><span class="required"> *</span></label>
   <%= text_field_tag 'settings[secret]', @settings['secret'], :size => 50 %>
+</p>
+<hr>
+<p>
+  <label><%= l(:label_proxy) %></label>
+  <%= text_field_tag 'settings[proxy]', @settings['proxy'], :size => 50 %>
 </p>

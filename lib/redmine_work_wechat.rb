@@ -21,5 +21,9 @@ module RedmineWorkWechat
     def secret
       settings_hash["secret"]
     end
+
+    def proxy
+      settings_hash["proxy"]
+    end
   end
 end

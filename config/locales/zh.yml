@@ -3,3 +3,5 @@ en:
   label_corpid: 企业 corpid
   label_agentid: 应用 agentId
   label_secret: 应用 secret
+  label_proxy: http 代理
+  created_new_issue: 新问题

@@ -3,3 +3,5 @@ en:
   label_corpid: corpid
   label_agentid: app agentId
   label_secret: app secret
+  label_proxy: http proxy
+  created_new_issue: Created new issue
