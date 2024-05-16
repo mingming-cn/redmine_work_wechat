@@ -1,0 +1,5 @@
+en:
+  label_work_wechat_enabled: 开启
+  label_corpid: 企业 corpid
+  label_agentid: 应用 agentId
+  label_secret: 应用 secret

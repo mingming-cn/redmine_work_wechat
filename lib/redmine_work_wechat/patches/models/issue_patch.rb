@@ -1,3 +1,5 @@
+require_relative '../../work_wechat'
+
 module RedmineWorkWechat
   module Patches
     module Models

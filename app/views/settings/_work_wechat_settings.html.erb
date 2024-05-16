@@ -1,0 +1,21 @@
+<% flash.now[:error] = "#{l("corpid")} #{l("activerecord.errors.messages.blank")}" if @settings['corpid'].blank? %>
+<% flash.now[:error] = "#{l("agentId")} #{l("activerecord.errors.messages.blank")}" if @settings['agentId'].blank? %>
+<% flash.now[:error] = "#{l("secret")} #{l("activerecord.errors.messages.blank")}" if @settings['secret'].blank? %>
+
+<p>
+  <label><%= l(:label_work_wechat_enabled) %></label>
+  <%= check_box_tag 'settings[enabled]', true, @settings['enabled'] %>
+</p>
+<p>
+  <label><%= l(:label_corpid) %><span class="required"> *</span></label>
+  <%= text_field_tag 'settings[corpid]', @settings['corpid'], :size => 50 %>
+</p>
+<p>
+  <label><%= l(:label_agentid) %><span class="required"> *</span></label>
+  <%= text_field_tag 'settings[agentid]', @settings['agentid'], :size => 50 %>
+  <br />
+</p>
+<p>
+  <label><%= l(:label_secret) %><span class="required"> *</span></label>
+  <%= text_field_tag 'settings[secret]', @settings['secret'], :size => 50 %>
+</p>

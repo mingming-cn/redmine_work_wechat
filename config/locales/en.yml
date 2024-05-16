@@ -1,3 +1,5 @@
-# English strings go here for Rails i18n
 en:
-  # my_label: "My label"
+  label_work_wechat_enabled: Enable work wechat plugin
+  label_corpid: corpid
+  label_agentid: app agentId
+  label_secret: app secret
