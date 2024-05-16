@@ -76,7 +76,9 @@ module RedmineWorkWechat
         :touser => users.join('|'),
         :msgtype => 'markdown',
         :agentid => RedmineWorkWechat::settings_hash['agentid'],
-        :markdown => msg,
+        :markdown => {
+          :content => content,
+        },
       }
       req.body = JSON.dump(req_data)
       res = http.request(req)
