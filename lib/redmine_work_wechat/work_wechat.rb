@@ -15,14 +15,10 @@ module RedmineWorkWechat
 
       corpid = RedmineWorkWechat::settings_hash['corpid']
       secret = RedmineWorkWechat::settings_hash['secret']
-
       uri = URI(@get_access_token_url % [corpid, secret])
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      req = Net::HTTP::Get.new(uri.request_uri)
-      res = http.request(req)
 
-      json = JSON.parse(res.body)
+      resp = get_http_client(uri).request(Net::HTTP::Get.new(uri.request_uri))
+      json = JSON.parse(resp.body)
       errcode = json['errcode']
       errmsg = json['errmsg']
       if errcode != 0
@@ -34,15 +30,11 @@ module RedmineWorkWechat
       expired_at = Time.now + expires_in - 30
 
       Rails.cache.write(@cache_key, access_token, expires_at: expired_at)
-
       access_token
     end
 
     def self.deliver_card_msg(users, title, msg, url = '', btntxt = '查看详情')
-      proxy = RedmineWorkWechat::settings_hash['proxy'].split(':')
       uri = URI(@send_msg_url % [get_access_token])
-      http = Net::HTTP.new(uri.host, uri.port, proxy.at(0),  proxy.at(1))
-      http.use_ssl = true
       req = Net::HTTP::Post.new(uri.request_uri)
       req_data = {
         :touser => users.join('|'),
@@ -56,9 +48,9 @@ module RedmineWorkWechat
         },
       }
       req.body = JSON.dump(req_data)
-      res = http.request(req)
+      resp = get_http_client(uri).request(req)
 
-      json = JSON.parse(res.body)
+      json = JSON.parse(resp.body)
       errcode = json['errcode']
       errmsg = json['errmsg']
       if errcode != 0
@@ -67,28 +59,42 @@ module RedmineWorkWechat
     end
 
     def self.deliver_markdown_msg(users, msg)
-      proxy = RedmineWorkWechat::settings_hash['proxy'].split(':')
       uri = URI(@send_msg_url % [get_access_token])
-      http = Net::HTTP.new(uri.host, uri.port, proxy.at(0),  proxy.at(1))
-      http.use_ssl = true
       req = Net::HTTP::Post.new(uri.request_uri)
       req_data = {
         :touser => users.join('|'),
         :msgtype => 'markdown',
         :agentid => RedmineWorkWechat::settings_hash['agentid'],
         :markdown => {
-          :content => content,
+          :content => msg,
         },
       }
       req.body = JSON.dump(req_data)
-      res = http.request(req)
+      resp = get_http_client(uri).request(req)
 
-      json = JSON.parse(res.body)
+      json = JSON.parse(resp.body)
       errcode = json['errcode']
       errmsg = json['errmsg']
       if errcode != 0
         raise "send markdown message failed: #{errcode} - #{errmsg}"
       end
+    end
+
+    def get_http_client(uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+
+      begin
+        proxy = RedmineWorkWechat::settings_hash['proxy'].split(':')
+        if proxy.length == 2
+          http.proxy_address = proxy.at(0)
+          http.proxy_port = proxy.at(1)
+        end
+      rescue
+        # Ignored
+      end
+
+      http
     end
   end
 end

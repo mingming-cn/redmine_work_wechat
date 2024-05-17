@@ -5,3 +5,4 @@ en:
   label_secret: 应用 secret
   label_proxy: http 代理
   created_new_issue: 新问题
+  updated_issue: 问题更新

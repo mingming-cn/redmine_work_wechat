@@ -5,3 +5,4 @@ en:
   label_secret: app secret
   label_proxy: http proxy
   created_new_issue: Created new issue
+  updated_issue: Updated issue
