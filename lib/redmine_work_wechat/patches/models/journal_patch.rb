@@ -2,6 +2,8 @@ module RedmineWorkWechat
   module Patches
     module Models
       module JournalPatch
+        include RedmineWorkWechat::Helper
+
         def self.prepended(base)
           base.class_eval do
             after_create_commit :send_notification
@@ -19,17 +21,14 @@ module RedmineWorkWechat
             work_wechat_users << user.mail
           end
 
-          issue = journal.journalized
-          link = url_for(:controller => 'issues', :action => 'show', :id => issue, :anchor => "change-#{journal.id}")
-
-          content = "# #{issue.tracker.name} [##{issue.id}] #{issue.subject}\n"
-          content += "[查看详情](#{link})"
-
+          content = "`#{l('updated_issue')}`\n\n"
+          content += render_markdown(journal.user, journal.journalized, journal)
           RedmineWorkWechat::WorkWechat.deliver_markdown_msg(work_wechat_users, content)
         end
+
       end
     end
   end
 end
 
-Issue.prepend RedmineWorkWechat::Patches::Models::IssuePatch
+Journal.prepend RedmineWorkWechat::Patches::Models::JournalPatch

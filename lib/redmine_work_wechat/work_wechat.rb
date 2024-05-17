@@ -6,11 +6,18 @@ module RedmineWorkWechat
     @get_access_token_url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=%s&corpsecret=%s'
     @send_msg_url = 'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=%s'
     @cache_key = '_work_wechat_access_token'
+    @cache_key_expired_at = '_work_wechat_access_token_expired_at'
 
     def self.get_access_token
       access_token = Rails.cache.read(@cache_key)
+      expired_at = Rails.cache.read(@cache_key_expired_at)
       unless access_token.blank?
-        return access_token
+        unless expired_at.blank?
+          if Time.now < Time.at(expired_at.to_i) do
+            return access_token
+          end
+          end
+        end
       end
 
       corpid = RedmineWorkWechat::settings_hash['corpid']
@@ -29,7 +36,8 @@ module RedmineWorkWechat
       expires_in = json['expires_in']
       expired_at = Time.now + expires_in - 30
 
-      Rails.cache.write(@cache_key, access_token, expires_at: expired_at)
+      Rails.cache.write(@cache_key, access_token)
+      Rails.cache.write(@cache_key_expired_at, expired_at)
       access_token
     end
 
@@ -80,20 +88,16 @@ module RedmineWorkWechat
       end
     end
 
-    def get_http_client(uri)
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-
-      begin
-        proxy = RedmineWorkWechat::settings_hash['proxy'].split(':')
-        if proxy.length == 2
-          http.proxy_address = proxy.at(0)
-          http.proxy_port = proxy.at(1)
-        end
-      rescue
-        # Ignored
+    def self.get_http_client(uri)
+      proxy = RedmineWorkWechat::settings_hash['proxy'].split(':')
+      if proxy.length == 2
+        http = Net::HTTP.new(uri.host, uri.port, proxy.first, proxy.last)
+        http.use_ssl = true
+        return http
       end
 
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
       http
     end
   end

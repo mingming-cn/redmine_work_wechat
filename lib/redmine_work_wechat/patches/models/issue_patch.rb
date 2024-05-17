@@ -4,6 +4,7 @@ module RedmineWorkWechat
   module Patches
     module Models
       module IssuePatch
+        include RedmineWorkWechat::Helper
 
         def self.prepended(base)
           base.class_eval do
@@ -19,10 +20,9 @@ module RedmineWorkWechat
             work_wechat_users << user.mail
           end
 
-          subject = "#{issue.tracker.name} [##{issue.id}] (#{issue.status.name}) #{issue.subject}"
-          link = "#{Setting.protocol}://#{Setting.host_name}/issues/#{@issue.id}"
-
-          RedmineWorkWechat::WorkWechat.deliver_card_msg(work_wechat_users, l("created_new_issue"), subject, link)
+          content = "`#{l('created_new_issue')}`\n\n"
+          content += render_markdown(self, issue.author, issue)
+          RedmineWorkWechat::WorkWechat.deliver_markdown_msg(work_wechat_users, content)
         end
       end
     end
