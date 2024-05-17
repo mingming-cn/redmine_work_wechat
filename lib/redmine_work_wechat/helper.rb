@@ -1,6 +1,7 @@
 module RedmineWorkWechat
   module Helper
     include IssuesHelper
+    include CustomFieldsHelper
 
     def render_markdown(author, issue, journal=nil)
       content = ''
