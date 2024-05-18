@@ -5,6 +5,7 @@
 * 新建问题通知
 * 更新问题通知
 * `redmine:send_work_wechat` 定期任务通知待完成任务
+* 支持 Redmine 5
 
 # 安装
 
