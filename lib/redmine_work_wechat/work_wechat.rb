@@ -11,14 +11,7 @@ module RedmineWorkWechat
     def self.get_access_token
       access_token = Rails.cache.read(@cache_key)
       expired_at = Rails.cache.read(@cache_key_expired_at)
-      unless access_token.blank?
-        unless expired_at.blank?
-          if Time.now < Time.at(expired_at.to_i) do
-            return access_token
-          end
-          end
-        end
-      end
+      return access_token if !access_token.blank? && !expired_at.blank? && (Time.now < Time.at(expired_at.to_i))
 
       corpid = RedmineWorkWechat::settings_hash['corpid']
       secret = RedmineWorkWechat::settings_hash['secret']
@@ -28,9 +21,7 @@ module RedmineWorkWechat
       json = JSON.parse(resp.body)
       errcode = json['errcode']
       errmsg = json['errmsg']
-      if errcode != 0
-        raise "get access token failed: #{errcode} - #{errmsg}"
-      end
+      raise "get access token failed: #{errcode} - #{errmsg}" if errcode != 0
 
       access_token = json['access_token']
       expires_in = json['expires_in']
@@ -42,6 +33,8 @@ module RedmineWorkWechat
     end
 
     def self.deliver_card_msg(users, title, msg, url = '', btntxt = '查看详情')
+      puts "send card message to: #{users.join('|')}"
+
       uri = URI(@send_msg_url % [get_access_token])
       req = Net::HTTP::Post.new(uri.request_uri)
       req_data = {
@@ -61,12 +54,12 @@ module RedmineWorkWechat
       json = JSON.parse(resp.body)
       errcode = json['errcode']
       errmsg = json['errmsg']
-      if errcode != 0
-        raise "send card message failed: #{errcode} - #{errmsg}"
-      end
+      raise "send card message failed: #{errcode} - #{errmsg}" if errcode != 0
     end
 
     def self.deliver_markdown_msg(users, msg)
+      puts "send markdown message to: #{users.join('|')}"
+
       uri = URI(@send_msg_url % [get_access_token])
       req = Net::HTTP::Post.new(uri.request_uri)
       req_data = {
@@ -83,9 +76,7 @@ module RedmineWorkWechat
       json = JSON.parse(resp.body)
       errcode = json['errcode']
       errmsg = json['errmsg']
-      if errcode != 0
-        raise "send markdown message failed: #{errcode} - #{errmsg}"
-      end
+      raise "send markdown message failed: #{errcode} - #{errmsg}" if errcode != 0
     end
 
     def self.get_http_client(uri)

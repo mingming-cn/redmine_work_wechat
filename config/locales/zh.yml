@@ -4,6 +4,7 @@ en:
   label_agentid: 应用 agentId
   label_secret: 应用 secret
   label_proxy: http 代理
-  created_new_issue: 新问题
-  updated_issue: 问题更新
+  created_new_issue: 新的指派
+  updated_issue: 任务更新
   view_details: 查看详情
+  issues_remind: 任务提醒

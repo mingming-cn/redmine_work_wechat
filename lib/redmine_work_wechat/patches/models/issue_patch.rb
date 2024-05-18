@@ -21,7 +21,7 @@ module RedmineWorkWechat
           end
 
           content = "`#{l('created_new_issue')}`\n\n"
-          content += render_markdown(self, issue.author, issue)
+          content += render_markdown(issue.author, issue)
           RedmineWorkWechat::WorkWechat.deliver_markdown_msg(work_wechat_users, content)
         end
       end
