@@ -62,9 +62,18 @@ module RedmineWorkWechat
       content << "<font color=\"warning\">%s</font>" % [l(:mail_body_reminder, :count => issues.size, :days => days)]
       content << "\n"
 
+      projects = {}
       issues.each do |issue|
-        issue_link = "#{Setting.protocol}://#{Setting.host_name}/issues/#{issue.id}"
-        content << "#{issue.project} - [#{issue.tracker} ##{issue.id}](#{issue_link}): #{issue.subject} (#{due_date_distance_in_words(issue.due_date)})"
+        projects[issue.project] ||= []
+        projects[issue.project] << issue
+      end
+
+      projects.each do |project, p_issues|
+        content << "**#{project}:**"
+        p_issues.each do |issue|
+          issue_link = "#{Setting.protocol}://#{Setting.host_name}/issues/#{issue.id}"
+          content << "   [#{issue.tracker} ##{issue.id}](#{issue_link}): #{issue.subject} (#{due_date_distance_in_words(issue.due_date)})"
+        end
       end
 
       open_issues_url = "#{Setting.protocol}://#{Setting.host_name}/issues?assigned_to_id=me&set_filter=1&sort=due_date%3Aasc"
