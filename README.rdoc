@@ -1,3 +1,0 @@
-= redmine_work_wechat
-
-Redmine Work Wechat plugin
