@@ -11,7 +11,7 @@ module RedmineWorkWechat
         end
 
         def send_notification
-          work_wechat_users = Array.[]
+          work_wechat_users = []
           journal = self
           users = journal.notified_users | journal.notified_watchers | journal.notified_mentions | journal.journalized.notified_mentions
           users.select! do |user|
@@ -21,7 +21,7 @@ module RedmineWorkWechat
             work_wechat_users << user.mail
           end
 
-          content = "`#{l('updated_issue')}`\n\n"
+          content = "`#{l('text_updated_issue')}`\n"
           content += render_markdown(journal.user, journal.journalized, journal)
           RedmineWorkWechat::WorkWechat.deliver_markdown_msg(work_wechat_users, content)
         end

@@ -4,7 +4,10 @@ en:
   label_agentid: app agentId
   label_secret: app secret
   label_proxy: http proxy
-  created_new_issue: Created new issue
-  updated_issue: Updated issue
-  view_details: view details
-  issues_remind: Issues remind
+  text_created_new_issue: Created new issue
+  text_updated_issue: Updated issue
+  text_view_details: View details
+  text_issues_remind: Issues remind
+  text_add_private_notes: Add private notes
+  text_add_notes: Add notes
+  text_updated: "has been updated by %{author}"

@@ -3,6 +3,7 @@ module RedmineWorkWechat
     include Redmine::I18n
     include ActionView::Helpers::DateHelper
     include IssuesHelper
+    include Helper
 
     I18n.locale = Setting.default_language
 
@@ -60,7 +61,6 @@ module RedmineWorkWechat
       content = []
 
       content << "<font color=\"warning\">%s</font>" % [l(:mail_body_reminder, :count => issues.size, :days => days)]
-      content << "\n"
 
       projects = {}
       issues.each do |issue|
@@ -69,6 +69,7 @@ module RedmineWorkWechat
       end
 
       projects.each do |project, p_issues|
+        content << ''
         content << "**#{project}:**"
         p_issues.each do |issue|
           issue_link = "#{Setting.protocol}://#{Setting.host_name}/issues/#{issue.id}"
@@ -77,9 +78,9 @@ module RedmineWorkWechat
       end
 
       open_issues_url = "#{Setting.protocol}://#{Setting.host_name}/issues?assigned_to_id=me&set_filter=1&sort=due_date%3Aasc"
-      content =  "`#{l(:issues_remind)}`\n" +
-                 content.map{|s| "> #{s}"}.join("\n") +
-                 "\n\n[#{l(:label_issue_view_all)}](#{open_issues_url})"
+      content =  "`#{l(:text_issues_remind)}`\n" +
+                 content.map { |s| "> #{s}" }.join("\n") +
+                 "\n[#{l(:label_issue_view_all)}](#{open_issues_url})"
 
       WorkWechat.deliver_markdown_msg([user.mail], content)
     end

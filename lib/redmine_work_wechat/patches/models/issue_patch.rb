@@ -20,7 +20,7 @@ module RedmineWorkWechat
             work_wechat_users << user.mail
           end
 
-          content = "`#{l('created_new_issue')}`\n\n"
+          content = "`#{l('text_created_new_issue')}`\n"
           content += render_markdown(issue.author, issue)
           RedmineWorkWechat::WorkWechat.deliver_markdown_msg(work_wechat_users, content)
         end

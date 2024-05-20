@@ -1,10 +1,13 @@
-en:
+zh:
   label_work_wechat_enabled: 开启
   label_corpid: 企业 corpid
   label_agentid: 应用 agentId
   label_secret: 应用 secret
   label_proxy: http 代理
-  created_new_issue: 新的指派
-  updated_issue: 任务更新
-  view_details: 查看详情
-  issues_remind: 任务提醒
+  text_created_new_issue: 新的指派
+  text_updated_issue: 任务更新
+  text_view_details: 查看详情
+  text_issues_remind: 任务提醒
+  text_add_private_notes: 添加私有注解
+  text_add_notes: 添加说明
+  text_updated: "已由 %{author} 更新"
