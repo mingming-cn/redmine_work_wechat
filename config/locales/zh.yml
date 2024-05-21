@@ -4,6 +4,7 @@ zh:
   label_agentid: 应用 agentId
   label_secret: 应用 secret
   label_proxy: http 代理
+  label_notification_include_details: 通知内包含详情
   text_created_new_issue: 新的指派
   text_updated_issue: 任务更新
   text_view_details: 查看详情

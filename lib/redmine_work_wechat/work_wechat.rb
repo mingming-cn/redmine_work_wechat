@@ -13,8 +13,8 @@ module RedmineWorkWechat
       expired_at = Rails.cache.read(@cache_key_expired_at)
       return access_token if !access_token.blank? && !expired_at.blank? && (Time.now < Time.at(expired_at.to_i))
 
-      corpid = RedmineWorkWechat::settings_hash['corpid']
-      secret = RedmineWorkWechat::settings_hash['secret']
+      corpid = RedmineWorkWechat.settings_hash['corpid']
+      secret = RedmineWorkWechat.settings_hash['secret']
       uri = URI(@get_access_token_url % [corpid, secret])
 
       resp = get_http_client(uri).request(Net::HTTP::Get.new(uri.request_uri))
@@ -40,7 +40,7 @@ module RedmineWorkWechat
       req_data = {
         :touser => users.join('|'),
         :msgtype => 'textcard',
-        :agentid => RedmineWorkWechat::settings_hash['agentid'],
+        :agentid => RedmineWorkWechat.settings_hash['agentid'],
         :textcard => {
           :title => title,
           :description => msg,
@@ -65,7 +65,7 @@ module RedmineWorkWechat
       req_data = {
         :touser => users.join('|'),
         :msgtype => 'markdown',
-        :agentid => RedmineWorkWechat::settings_hash['agentid'],
+        :agentid => RedmineWorkWechat.settings_hash['agentid'],
         :markdown => {
           :content => msg,
         },
@@ -80,7 +80,7 @@ module RedmineWorkWechat
     end
 
     def self.get_http_client(uri)
-      proxy = RedmineWorkWechat::settings_hash['proxy'].split(':')
+      proxy = RedmineWorkWechat.settings_hash['proxy'].split(':')
       if proxy.length == 2
         http = Net::HTTP.new(uri.host, uri.port, proxy.first, proxy.last)
         http.use_ssl = true

@@ -3,7 +3,7 @@ module RedmineWorkWechat
     include IssuesHelper
     include CustomFieldsHelper
 
-    def render_markdown(author, issue, journal=nil)
+    def render_markdown(author, issue, journal = nil)
       content = []
       content << ''
       content << "<font color=\"info\">#{issue.tracker.name} \[\##{issue.id}\] #{issue.subject}</font>"
@@ -30,14 +30,15 @@ module RedmineWorkWechat
       content << ''
       content += email_issue_attributes(issue, author, false)
 
-      content << "#{l(:field_description)}: "
-      content << issue.description
+      if RedmineWorkWechat.settings_hash['notification_include_details']
+        content << "#{l(:field_description)}: "
+        content << issue.description
 
-      # attachments list
-      if issue.attachments.any?
-        content << l(:label_attachment_plural).ljust(37, '-')
-        issue.attachments.each do |attachment|
-          content << "#{attachment.filename} (#{attachment.filesize})"
+        if issue.attachments.any?
+          content << l(:label_attachment_plural).ljust(37, '-')
+          issue.attachments.each do |attachment|
+            content << "#{attachment.filename} (#{attachment.filesize})"
+          end
         end
       end
 

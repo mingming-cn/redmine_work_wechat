@@ -24,3 +24,8 @@
   <label><%= l(:label_proxy) %></label>
   <%= text_field_tag 'settings[proxy]', @settings['proxy'], :size => 50 %>
 </p>
+<hr>
+<p>
+  <label><%= l(:label_notification_include_details) %></label>
+  <%= check_box_tag 'settings[notification_include_details]', @settings['notification_include_details'] %>
+</p>
