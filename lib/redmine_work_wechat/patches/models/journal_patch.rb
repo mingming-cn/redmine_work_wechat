@@ -21,6 +21,15 @@ module RedmineWorkWechat
             work_wechat_users << user.mail
           end
 
+          if issue.author.pref.no_self_notified
+            addresses = issue.author.mails
+            work_wechat_users -= addresses if work_wechat_users.is_a?(Array)
+          end
+
+          if work_wechat_users.length == 0
+            return
+          end
+
           content = "`#{l('text_updated_issue')}`\n"
           content += render_markdown(journal.user, journal.journalized, journal)
           RedmineWorkWechat::WorkWechat.deliver_markdown_msg(work_wechat_users, content)

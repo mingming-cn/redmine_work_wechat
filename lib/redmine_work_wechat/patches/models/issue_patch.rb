@@ -13,11 +13,20 @@ module RedmineWorkWechat
         end
 
         def send_notification
-          work_wechat_users = Array.[]
+          work_wechat_users = []
           issue = self
           users = issue.notified_users | issue.notified_watchers | issue.notified_mentions
           users.each do |user|
             work_wechat_users << user.mail
+          end
+
+          if issue.author.pref.no_self_notified
+            addresses = issue.author.mails
+            work_wechat_users -= addresses if work_wechat_users.is_a?(Array)
+          end
+
+          if work_wechat_users.length == 0
+            return
           end
 
           content = "`#{l('text_created_new_issue')}`\n"
