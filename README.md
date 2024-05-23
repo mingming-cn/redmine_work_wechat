@@ -2,10 +2,11 @@
 
 企业微信通知插件，支持特性如下：
 
+* 支持 Redmine 5.x
 * 新建问题通知
 * 更新问题通知
 * `redmine:send_work_wechat` 定期任务通知待完成任务
-* 支持 Redmine 5.x
+* 支持按账号设置 “不要发送对我自己提交的修改的通知”，与 “邮件通知 > 不要发送对我自己提交的修改的通知” 共用同一个配置
 
 # 安装
 
@@ -13,8 +14,9 @@
 2. `git clone https://github.com/mingming-cn/redmine_work_wechat.git`
 3. 进入插件页面配置相关参数，管理 > 插件 > Redmine Work Wechat plugin > 配置
 
-# Task 使用方法
+# Task 
 
+## 使用方法
 > Available options:
 > * :days     => how many days in the future to remind about (defaults to 7)
 > * :tracker  => id of tracker for filtering issues (defaults to all trackers)
@@ -25,6 +27,8 @@
 ```bash
 rake redmine:send_work_wechat days=10 RAILS_ENV="production"
 ```
+## 通知效果
+![](assets/images/msg_task.png)
 
 # 截图
 
