@@ -29,3 +29,10 @@
   <label><%= l(:label_notification_include_details) %></label>
   <%= check_box_tag 'settings[notification_include_details]', @settings['notification_include_details'] %>
 </p>
+<p>
+  <label><%= l(:label_open_in_default_browser) %></label>
+  <%= check_box_tag 'settings[open_in_default_browser]', @settings['open_in_default_browser'] %>
+  <br />
+  <em><%= l(:open_in_default_browser_tips) %></em>
+</p>
+

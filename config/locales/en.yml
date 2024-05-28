@@ -5,6 +5,8 @@ en:
   label_secret: app secret
   label_proxy: http proxy
   label_notification_include_details: Notification include details
+  label_open_in_default_browser: Open notification in default browser
+  open_in_default_browser_tips: Need to configure the redmine domain as a trusted domain in WeChat Work first
   text_created_new_issue: Created new issue
   text_updated_issue: Updated issue
   text_view_details: View details

@@ -1,0 +1,27 @@
+<% if RedmineWorkWechat::settings_hash["open_in_default_browser"] %>
+  <% js_sdk_config = RedmineWorkWechat::DefaultBrowser::js_sdk_config(request) %>
+
+  <script>
+      ww.register({
+          corpId: "<%= RedmineWorkWechat::settings_hash["corpid"] %>",
+          agentId: "<%= RedmineWorkWechat::settings_hash["agentid"] %>",
+          jsApiList: ['openDefaultBrowser'],
+          getConfigSignature
+      })
+
+      async function getConfigSignature() {
+          return {
+              timestamp: <%= js_sdk_config[:timestamp] %>,
+              nonceStr: "<%= js_sdk_config[:noncestr] %>",
+              signature: "<%= js_sdk_config[:signature] %>"
+          }
+      }
+
+      ww.openDefaultBrowser({
+          url: "<%= js_sdk_config[:url].html_safe %>",
+          fail(result) {
+              alert(JSON.stringify(result))
+          },
+      })
+  </script>
+<% end %>

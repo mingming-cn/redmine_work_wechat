@@ -1,5 +1,3 @@
-require_relative 'redmine_work_wechat/patches/models/issue_patch'
-
 module RedmineWorkWechat
   class << self
     def settings_hash
@@ -28,6 +26,10 @@ module RedmineWorkWechat
 
     def notification_include_details
       settings_hash["notification_include_details"]
+    end
+
+    def open_in_default_browser
+      settings_hash["open_in_default_browser"]
     end
   end
 end

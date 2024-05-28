@@ -7,12 +7,20 @@
 * 更新问题通知
 * `redmine:send_work_wechat` 定期任务通知待完成任务
 * 支持按账号设置 “不要发送对我自己提交的修改的通知”，与 “邮件通知 > 不要发送对我自己提交的修改的通知” 共用同一个配置
+* 支持 “使用默认浏览器打开通知链接” 
 
 # 安装
 
 1. `cd ${REDMINE_ROOT}/plugins`
 2. `git clone https://github.com/mingming-cn/redmine_work_wechat.git`
 3. 进入插件页面配置相关参数，管理 > 插件 > Redmine Work Wechat plugin > 配置
+
+
+## 特殊功能配置
+
+### 使用默认浏览器打开通知链接
+
+请在企业微信应用 “网页授权及JS-SDK” 功能中，把 Redmine 系统的域名配置为可信域名。
 
 # Task 
 
