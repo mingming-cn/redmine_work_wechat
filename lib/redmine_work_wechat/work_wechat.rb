@@ -12,15 +12,21 @@ module RedmineWorkWechat
     @ckey_access_token_expired_at = '_work_wechat_access_token_expired_at'
 
     def self.get_http_client(uri)
-      proxy = RedmineWorkWechat.settings_hash['proxy'].split(':')
-      if proxy.length == 2
-        http = Net::HTTP.new(uri.host, uri.port, proxy.first, proxy.last)
-        http.use_ssl = true
-        return http
-      end
-
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
+
+      unless RedmineWorkWechat.settings_hash['proxy'].nil?
+        proxy = RedmineWorkWechat.settings_hash['proxy'].split(':')
+        case proxy.length
+        when 1
+          http = Net::HTTP.new(uri.host, uri.port, proxy.first, 80)
+        when 2
+          http = Net::HTTP.new(uri.host, uri.port, proxy.first, proxy.last)
+        else
+          # type code here
+        end
+      end
+
       http
     end
 
@@ -35,7 +41,11 @@ module RedmineWorkWechat
       json = JSON.parse(resp.body)
       errcode = json['errcode']
       errmsg = json['errmsg']
-      raise "get access token failed: #{errcode} - #{errmsg}" if errcode != 0
+
+      if errcode != 0
+        puts "redmine_work_wechat: get access token failed: #{errcode} - #{errmsg}"
+        return ""
+      end
 
       ticket = json['ticket']
       expires_in = json['expires_in']
