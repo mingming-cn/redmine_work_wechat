@@ -30,7 +30,7 @@ module RedmineWorkWechat
       content << ''
       content += email_issue_attributes(issue, author, false)
 
-      if RedmineWorkWechat.settings_hash['notification_include_details']
+      if RedmineWorkWechat.notification_include_details?
         content << "#{l(:field_description)}: "
         content << issue.description
 
@@ -50,7 +50,11 @@ module RedmineWorkWechat
     end
 
     def arr_to_quote(arr)
-      arr.map { |s| "> #{s.gsub("\n", "\n> ")}" }.join("\n")
+      arr.map do |s|
+        next if s.nil?
+
+        "> #{s.gsub("\n", "\n> ")}"
+      end.join("\n")
     end
 
   end

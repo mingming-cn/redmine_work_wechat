@@ -22,6 +22,10 @@ namespace :redmine do
       return
     end
 
-    reminders(options)
+    begin
+      reminders(options)
+    rescue StandardError => e
+      Rails.logger.error e.message
+    end
   end
 end

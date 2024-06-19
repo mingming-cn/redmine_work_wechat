@@ -1,5 +1,5 @@
-require "net/http"
-require "json"
+require 'net/http'
+require 'json'
 
 module RedmineWorkWechat
   module WorkWechat
@@ -13,20 +13,20 @@ module RedmineWorkWechat
 
     def self.get_http_client(uri)
       http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
 
-      unless RedmineWorkWechat.settings_hash['proxy'].nil?
+      if RedmineWorkWechat.settings_hash['proxy'].present?
         proxy = RedmineWorkWechat.settings_hash['proxy'].split(':')
-        case proxy.length
-        when 1
+        if proxy.length == 1
           http = Net::HTTP.new(uri.host, uri.port, proxy.first, 80)
-        when 2
+        elsif proxy.length == 2
           http = Net::HTTP.new(uri.host, uri.port, proxy.first, proxy.last)
-        else
-          # type code here
         end
       end
 
+      http.use_ssl = true
+      http.open_timeout = 2
+      http.read_timeout = 2
+      http.write_timeout = 2
       http
     end
 
@@ -44,7 +44,7 @@ module RedmineWorkWechat
 
       if errcode != 0
         puts "redmine_work_wechat: get access token failed: #{errcode} - #{errmsg}"
-        return ""
+        return ''
       end
 
       ticket = json['ticket']
@@ -86,14 +86,14 @@ module RedmineWorkWechat
       uri = URI(format(@send_msg_url, get_access_token))
       req = Net::HTTP::Post.new(uri.request_uri)
       req_data = {
-        :touser => users.join('|'),
-        :msgtype => 'textcard',
-        :agentid => RedmineWorkWechat.settings_hash['agentid'],
-        :textcard => {
-          :title => title,
-          :description => msg,
-          :url => url,
-          :btntxt => btntxt
+        touser: users.join('|'),
+        msgtype: 'textcard',
+        agentid: RedmineWorkWechat.settings_hash['agentid'],
+        textcard: {
+          title: title,
+          description: msg,
+          url: url,
+          btntxt: btntxt
         },
       }
       req.body = JSON.dump(req_data)
@@ -111,12 +111,12 @@ module RedmineWorkWechat
       uri = URI(format(@send_msg_url, get_access_token))
       req = Net::HTTP::Post.new(uri.request_uri)
       req_data = {
-        :touser => users.join('|'),
-        :msgtype => 'markdown',
-        :agentid => RedmineWorkWechat.settings_hash['agentid'],
-        :markdown => {
-          :content => msg,
-        },
+        touser: users.join('|'),
+        msgtype: 'markdown',
+        agentid: RedmineWorkWechat.settings_hash['agentid'],
+        markdown: {
+          content: msg,
+        }
       }
       req.body = JSON.dump(req_data)
       resp = get_http_client(uri).request(req)

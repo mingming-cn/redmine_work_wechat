@@ -13,9 +13,7 @@ module RedmineWorkWechat
         end
 
         def send_notification
-          unless RedmineWorkWechat::available?
-            return
-          end
+          return unless RedmineWorkWechat.available?
 
           work_wechat_users = []
           issue = self
@@ -29,13 +27,16 @@ module RedmineWorkWechat
             work_wechat_users -= addresses if work_wechat_users.is_a?(Array)
           end
 
-          if work_wechat_users.length == 0
-            return
-          end
+          return if work_wechat_users.empty?
 
           content = "`#{l('text_created_new_issue')}`\n"
           content += render_markdown(issue.author, issue)
-          RedmineWorkWechat::WorkWechat.deliver_markdown_msg(work_wechat_users, content)
+
+          begin
+            RedmineWorkWechat::WorkWechat.deliver_markdown_msg(work_wechat_users, content)
+          rescue StandardError => e
+            Rails.logger.error "send work wechat msg failed: #{e.message}"
+          end
         end
       end
     end

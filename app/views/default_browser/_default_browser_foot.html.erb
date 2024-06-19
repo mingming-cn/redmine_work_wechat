@@ -1,26 +1,39 @@
-<% if RedmineWorkWechat::enabled? %>
-  <% js_sdk_config = RedmineWorkWechat::DefaultBrowser::js_sdk_config(request) %>
+<% if RedmineWorkWechat.enabled? && RedmineWorkWechat.open_in_default_browser? %>
   <script>
-      ww.register({
-          corpId: "<%= RedmineWorkWechat::settings_hash["corpid"] %>",
-          agentId: "<%= RedmineWorkWechat::settings_hash["agentid"] %>",
-          jsApiList: ['openDefaultBrowser'],
-          getConfigSignature
-      })
+      let ua = navigator.userAgent.toLowerCase();
+      if (ua.match(/WxWork/i).toString() === "wxwork") {
+          url = window.location.href.split('#')[0];
+          fetch("/work_wechat/js_sdk_config?page_url=" + url)
+              .then((response) => response.json())
+              .then((data) => {
+                  if (data.err) {
+                      alert(data.err)
+                      return
+                  }
+                  ww.register({
+                      corpId: "<%= RedmineWorkWechat.corpid %>",
+                      agentId: "<%= RedmineWorkWechat.agentid %>",
+                      jsApiList: ['openDefaultBrowser'],
+                      getConfigSignature
+                  })
 
-      async function getConfigSignature() {
-          return {
-              timestamp: <%= js_sdk_config[:timestamp] %>,
-              nonceStr: "<%= js_sdk_config[:noncestr] %>",
-              signature: "<%= js_sdk_config[:signature] %>"
-          }
+                  async function getConfigSignature() {
+                      return {
+                          timestamp: data.timestamp,
+                          nonceStr: data.noncestr,
+                          signature: data.signature
+                      }
+                  }
+
+                  ww.openDefaultBrowser({
+                      url: url,
+                      fail(result) {
+                          alert(JSON.stringify(result))
+                      },
+                  })
+
+              })
+              .catch((error) => alert(error));
       }
-
-      ww.openDefaultBrowser({
-          url: "<%= js_sdk_config[:url]&.html_safe %>",
-          fail(result) {
-              alert(JSON.stringify(result))
-          },
-      })
   </script>
 <% end %>
