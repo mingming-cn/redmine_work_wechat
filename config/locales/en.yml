@@ -14,3 +14,6 @@ en:
   text_add_private_notes: Add private notes
   text_add_notes: Add notes
   text_updated: "has been updated by %{author}"
+  secret: secret
+  agentid: agentid
+  corpid: corpid

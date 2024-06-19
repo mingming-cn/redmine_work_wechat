@@ -8,6 +8,10 @@ module RedmineWorkWechat
       settings_hash["enabled"]
     end
 
+    def available?
+      enabled? && corpid.present? && agentid.present? && secret.present?
+    end
+
     def corpid
       settings_hash["corpid"]
     end
@@ -28,7 +32,7 @@ module RedmineWorkWechat
       settings_hash["notification_include_details"]
     end
 
-    def open_in_default_browser
+    def open_in_default_browser?
       settings_hash["open_in_default_browser"]
     end
   end

@@ -13,6 +13,10 @@ module RedmineWorkWechat
         end
 
         def send_notification
+          unless RedmineWorkWechat::available?
+            return
+          end
+
           work_wechat_users = []
           issue = self
           users = issue.notified_users | issue.notified_watchers | issue.notified_mentions

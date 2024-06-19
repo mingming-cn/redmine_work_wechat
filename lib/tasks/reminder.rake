@@ -17,6 +17,11 @@ namespace :redmine do
     options[:users] = ENV['users'].presence.to_s.split(',').each(&:strip!)
     options[:version] = ENV['version'].presence
 
+    unless RedmineWorkWechat::available?
+      puts "WorkWechat is not configured, skipped."
+      return
+    end
+
     reminders(options)
   end
 end

@@ -14,3 +14,6 @@ zh:
   text_add_private_notes: 添加私有注解
   text_add_notes: 添加说明
   text_updated: "已由 %{author} 更新"
+  secret: secret
+  agentid: agentid
+  corpid: corpid

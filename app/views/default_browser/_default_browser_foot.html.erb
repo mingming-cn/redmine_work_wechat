@@ -1,6 +1,5 @@
-<% if RedmineWorkWechat::settings_hash["open_in_default_browser"] %>
+<% if RedmineWorkWechat::enabled? %>
   <% js_sdk_config = RedmineWorkWechat::DefaultBrowser::js_sdk_config(request) %>
-
   <script>
       ww.register({
           corpId: "<%= RedmineWorkWechat::settings_hash["corpid"] %>",
@@ -18,7 +17,7 @@
       }
 
       ww.openDefaultBrowser({
-          url: "<%= js_sdk_config[:url].html_safe %>",
+          url: "<%= js_sdk_config[:url]&.html_safe %>",
           fail(result) {
               alert(JSON.stringify(result))
           },
