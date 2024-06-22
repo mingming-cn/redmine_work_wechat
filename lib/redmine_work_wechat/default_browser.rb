@@ -3,7 +3,6 @@ module RedmineWorkWechat
     require 'digest/sha1'
 
     render_on :view_layouts_base_html_head, partial: 'default_browser/default_browser_head'
-    render_on :view_layouts_base_body_bottom, partial: 'default_browser/default_browser_foot'
 
     def self.js_sdk_config(request)
       return {} unless RedmineWorkWechat.available?

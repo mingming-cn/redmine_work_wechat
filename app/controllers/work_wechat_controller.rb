@@ -1,8 +1,7 @@
 class WorkWechatController < ApplicationController
-  accept_api_auth :js_sdk_config
+  skip_before_action :check_if_login_required
 
   def js_sdk_config
-    puts params['page_url']
     unless RedmineWorkWechat.available?
       render json: { err: 'please configure WorkWechat' }
       return

@@ -9,6 +9,7 @@ Redmine::Plugin.register :redmine_work_wechat do
   version '0.0.1'
   url 'https://github.com/mingming-cn/redmine_work_wechat'
   author_url 'https://mingming.wang'
-  settings :default => { 'enabled' => false, 'corpid' => '', 'agentId' => '',  'secret' => '', 'open_in_default_browser' => false },
-           :partial => 'settings/work_wechat_settings'
+
+  settings default: { 'enabled' => false, 'corpid' => '', 'agentId' => '',  'secret' => '', 'open_in_default_browser' => false },
+           partial: 'settings/work_wechat_settings'
 end
