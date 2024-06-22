@@ -13,19 +13,15 @@ module RedmineWorkWechat
         def send_notification
           return unless RedmineWorkWechat.available?
 
-          work_wechat_users = []
           journal = self
           users = journal.notified_users | journal.notified_watchers | journal.notified_mentions | journal.journalized.notified_mentions
           users.select! do |user|
             journal.notes? || journal.visible_details(user).any?
           end
-          users.each do |user|
-            work_wechat_users << user.mail
-          end
 
+          work_wechat_users = extract_user_ids(users)
           if issue.author.pref.no_self_notified
-            addresses = issue.author.mails
-            work_wechat_users -= addresses if work_wechat_users.is_a?(Array)
+            work_wechat_users -= extract_user_ids(issue.author) if work_wechat_users.is_a?(Array)
           end
 
           return if work_wechat_users.empty?

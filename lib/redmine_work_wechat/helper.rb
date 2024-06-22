@@ -3,6 +3,16 @@ module RedmineWorkWechat
     include IssuesHelper
     include CustomFieldsHelper
 
+    def extract_user_ids(users)
+      field = RedmineWorkWechat.settings_hash['user_relation']
+      field = 'mail' if field.blank?
+      user_ids = []
+      users.each do |user|
+        user_ids << user[field] if user[field].present? && !user[field].blank?
+      end
+      user_ids
+    end
+
     def render_markdown(author, issue, journal = nil)
       content = []
       content << ''

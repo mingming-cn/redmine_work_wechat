@@ -6,6 +6,9 @@ zh:
   label_proxy: http 代理
   label_notification_include_details: 通知内包含详情
   label_open_in_default_browser: 在默认浏览器中打开通知链接
+  label_user_relation: 用户关联类型
+  label_work_wechat_user_id: 企微ID
+  user_custom_field_tips: 当选择“自定义”时请在用户资料中配置“Work Wechat ID”字段
   open_in_default_browser_tips: 需要先在企业微信中把 Redmine 域名配置为可信域名
   text_created_new_issue: 新的指派
   text_updated_issue: 任务更新
@@ -14,6 +17,9 @@ zh:
   text_add_private_notes: 添加私有注解
   text_add_notes: 添加说明
   text_updated: "已由 %{author} 更新"
+  text_user_email: 邮箱
+  text_user_login_id: 登录名
+  text_user_custom_field: 自定义
   secret: secret
   agentid: agentid
   corpid: corpid

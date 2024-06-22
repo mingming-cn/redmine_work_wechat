@@ -11,10 +11,15 @@
 
 # 安装
 
-1. `cd ${REDMINE_ROOT}/plugins`
-2. `git clone https://github.com/mingming-cn/redmine_work_wechat.git`
-3. 进入插件页面配置相关参数，管理 > 插件 > Redmine Work Wechat plugin > 配置
-
+1. 安装插件
+```bash
+cd ${REDMINE_ROOT}/plugins
+git clone https://github.com/mingming-cn/redmine_work_wechat.git`
+cd ..
+bundle exec rake redmine:plugins:migrate RAILS_ENV=production
+```
+2. 进入插件页面配置相关参数，管理 > 插件 > Redmine Work Wechat plugin > 配置
+3. 当 “用户关联类型” 选择 “自定义” 时请在用户资料中配置 “企微ID” 字段
 
 ## 特殊功能配置
 
