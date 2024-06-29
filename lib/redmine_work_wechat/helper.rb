@@ -4,12 +4,16 @@ module RedmineWorkWechat
     include CustomFieldsHelper
 
     def extract_user_ids(users)
+      return [] if users.nil? || !users.is_a?(Array) || users.empty?
+
       field = RedmineWorkWechat.settings_hash['user_relation']
       field = 'mail' if field.blank?
+
       user_ids = []
       users.each do |user|
         user_ids << user[field] if user[field].present? && !user[field].blank?
       end
+
       user_ids
     end
 

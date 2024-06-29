@@ -20,10 +20,7 @@ module RedmineWorkWechat
           end
 
           work_wechat_users = extract_user_ids(users)
-          if issue.author.pref.no_self_notified
-            work_wechat_users -= extract_user_ids(issue.author) if work_wechat_users.is_a?(Array)
-          end
-
+          work_wechat_users -= extract_user_ids([issue.author]) if issue.author.pref.no_self_notified
           return if work_wechat_users.empty?
 
           content = "`#{l('text_updated_issue')}`\n"
