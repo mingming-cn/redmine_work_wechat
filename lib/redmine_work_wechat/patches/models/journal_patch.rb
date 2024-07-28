@@ -32,7 +32,6 @@ module RedmineWorkWechat
             Rails.logger.error "send work wechat msg failed: #{e.message}"
           end
         end
-
       end
     end
   end

@@ -2,13 +2,15 @@
 
 企业微信通知插件，支持特性如下：
 
-* 支持 Redmine 5.x
+* 支持版本：Redmine 5.x
 * 新建问题通知
 * 更新问题通知
 * `redmine:send_work_wechat` 定期任务通知待完成任务
-* 支持按账号设置 “不要发送对我自己提交的修改的通知”，与 “邮件通知 > 不要发送对我自己提交的修改的通知” 共用同一个配置
-* 支持 “使用默认浏览器打开通知链接” 
+* 按账号设置 “不要发送对我自己提交的修改的通知”，与 “邮件通知 > 不要发送对我自己提交的修改的通知” 共用同一个配置
+* 使用默认浏览器打开通知链接
 * 自定义 `Redmine 用户` 与 `企业微信 用户` 的关联方式
+* 超长内容自动分割为多次发送 // TODO
+* 限制问题详情内容长度 // TODO
 
 # 安装
 
@@ -25,7 +27,7 @@ bundle exec rake redmine:plugins:migrate RAILS_ENV=production
 ## 用户关联类型
 可以选择 `Redmine 用户` 与 `企业微信 用户` 的关联方式，默认为通过邮箱关联，可选项：`邮箱`、`登录名`、`自定义(需要在用户资料里配置)`
 
-![](assets/images/user_config.png)
+![用户配置](assets/images/user_config.png)
 
 ## 使用默认浏览器打开通知链接
 
@@ -34,6 +36,7 @@ bundle exec rake redmine:plugins:migrate RAILS_ENV=production
 # Task 
 
 ## 使用方法
+
 > Available options:
 > * :days     => how many days in the future to remind about (defaults to 7)
 > * :tracker  => id of tracker for filtering issues (defaults to all trackers)
@@ -45,18 +48,18 @@ bundle exec rake redmine:plugins:migrate RAILS_ENV=production
 rake redmine:send_work_wechat days=10 RAILS_ENV="production"
 ```
 ## 通知效果
-![](assets/images/msg_task.png)
+![通知效果](assets/images/msg_task.png)
 
 # 截图
 
 ## 插件配置
-![](assets/images/plugin_config.png)
+![插件配置](assets/images/plugin_config.png)
 
 ## 新问题通知
-![](assets/images/msg_new_issue.png)
+![新问题通知](assets/images/msg_new_issue.png)
 
 ## 问题更新通知
-![](assets/images/msg_issue_updated.png)
+![问题更新通知](assets/images/msg_issue_updated.png)
 
 ## 定期任务通知
-![](assets/images/msg_task.png)
+![定期任务通知](assets/images/msg_task.png)

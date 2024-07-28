@@ -70,6 +70,5 @@ module RedmineWorkWechat
         "> #{s.gsub("\n", "\n> ")}"
       end.join("\n")
     end
-
   end
 end
