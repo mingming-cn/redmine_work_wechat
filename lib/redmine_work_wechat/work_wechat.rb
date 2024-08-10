@@ -94,7 +94,7 @@ module RedmineWorkWechat
           description: msg,
           url: url,
           btntxt: btntxt
-        },
+        }
       }
       req.body = JSON.dump(req_data)
       resp = get_http_client(uri).request(req)
@@ -115,7 +115,7 @@ module RedmineWorkWechat
         msgtype: 'markdown',
         agentid: RedmineWorkWechat.settings_hash['agentid'],
         markdown: {
-          content: msg,
+          content: msg
         }
       }
       req.body = JSON.dump(req_data)
@@ -126,6 +126,5 @@ module RedmineWorkWechat
       errmsg = json['errmsg']
       raise "send markdown message failed: #{errcode} - #{errmsg}" if errcode != 0
     end
-
   end
 end

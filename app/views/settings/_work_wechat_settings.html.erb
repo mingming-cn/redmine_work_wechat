@@ -44,6 +44,10 @@
   <%= check_box_tag 'settings[notification_include_details]', false, @settings['notification_include_details'] %>
 </p>
 <p>
+  <label><%= l(:label_notification_include_details_size) %></label>
+  <%= number_field_tag 'settings[notification_include_details_size]', false, { value: @settings['notification_include_details_size'] || 200, max: 1000}  %>
+</p>
+<p>
   <label><%= l(:label_open_in_default_browser) %></label>
   <%= check_box_tag 'settings[open_in_default_browser]', false, @settings['open_in_default_browser'] %>
   <br />

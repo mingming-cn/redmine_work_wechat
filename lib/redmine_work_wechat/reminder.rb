@@ -31,36 +31,35 @@ module RedmineWorkWechat
             " AND #{Project.table_name}.status = #{Project::STATUS_ACTIVE}" \
             " AND #{Issue.table_name}.due_date <= ?", days.day.from_now.to_date
         )
-      scope = scope.where(:assigned_to_id => user_ids) if user_ids.present?
-      scope = scope.where(:project_id => project.id) if project
-      scope = scope.where(:fixed_version_id => target_version_id) if target_version_id.present?
-      scope = scope.where(:tracker_id => tracker.id) if tracker
-      issues_by_assignee = scope.includes(:status, :assigned_to, :project, :tracker).
-        group_by(&:assigned_to)
+      scope = scope.where(assigned_to_id: user_ids) if user_ids.present?
+      scope = scope.where(project_id: project.id) if project
+      scope = scope.where(fixed_version_id: target_version_id) if target_version_id.present?
+      scope = scope.where(tracker_id: tracker.id) if tracker
+      issues_by_assignee = scope.includes(:status, :assigned_to, :project, :tracker)
+                                .group_by(&:assigned_to)
       issues_by_assignee.keys.each do |assignee| # rubocop:disable Style/HashEachMethods
-        if assignee.is_a?(Group)
-          assignee.users.each do |user|
-            issues_by_assignee[user] ||= []
-            issues_by_assignee[user] += issues_by_assignee[assignee]
-          end
+        next unless assignee.is_a?(Group)
+
+        assignee.users.each do |user|
+          issues_by_assignee[user] ||= []
+          issues_by_assignee[user] += issues_by_assignee[assignee]
         end
       end
 
       issues_by_assignee.each do |assignee, issues|
-        if assignee.is_a?(User) && assignee.active? && issues.present?
-          visible_issues = issues.select { |i| i.visible?(assignee) }
-          visible_issues.sort! { |a, b| (a.due_date <=> b.due_date).nonzero? || (a.id <=> b.id) }
-          if visible_issues.present?
-            reminder(assignee, visible_issues, days)
-          end
-        end
+        next unless assignee.is_a?(User) && assignee.active? && issues.present?
+
+        visible_issues = issues.select { |i| i.visible?(assignee) }
+        visible_issues.sort! { |a, b| (a.due_date <=> b.due_date).nonzero? || (a.id <=> b.id) }
+        reminder(assignee, visible_issues, days) if visible_issues.present?
       end
     end
 
     def reminder(user, issues, days)
       content = []
 
-      content << "<font color=\"warning\">%s</font>" % [l(:mail_body_reminder, :count => issues.size, :days => days)]
+      content << format('<font color="warning">%s</font>',
+                        l(:mail_body_reminder, count: issues.size, days: days))
 
       projects = {}
       issues.each do |issue|
@@ -85,5 +84,4 @@ module RedmineWorkWechat
       WorkWechat.deliver_markdown_msg([user.mail], content)
     end
   end
-
 end

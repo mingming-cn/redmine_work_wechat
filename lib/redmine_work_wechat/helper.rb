@@ -36,7 +36,7 @@ module RedmineWorkWechat
                      else
                        "<font color=\"warning\">#{l(:text_add_notes)}</font>"
                      end
-          content << "<font color=\"warning\">#{journal.notes}</font>"
+          content << "<font color=\"warning\">#{journal.notes[0..RedmineWorkWechat.notification_include_details_size]}</font>"
         end
       end
 
@@ -46,7 +46,7 @@ module RedmineWorkWechat
 
       if RedmineWorkWechat.notification_include_details?
         content << "#{l(:field_description)}: "
-        content << issue.description
+        content << issue.description[0..RedmineWorkWechat.notification_include_details_size]
 
         if issue.attachments.any?
           content << l(:label_attachment_plural).ljust(37, '-')

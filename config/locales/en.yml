@@ -5,6 +5,7 @@ en:
   label_secret: app secret
   label_proxy: http proxy
   label_notification_include_details: Notification include details
+  label_notification_include_details_size: Max length for details
   label_open_in_default_browser: Open notification in default browser
   label_user_relation: User ID type
   label_work_wechat_user_id: Work Wechat ID

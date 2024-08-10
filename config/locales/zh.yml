@@ -5,6 +5,7 @@ zh:
   label_secret: 应用 secret
   label_proxy: http 代理
   label_notification_include_details: 通知内包含详情
+  label_notification_include_details_size: 详情最大字数
   label_open_in_default_browser: 在默认浏览器中打开通知链接
   label_user_relation: 用户关联类型
   label_work_wechat_user_id: 企微ID

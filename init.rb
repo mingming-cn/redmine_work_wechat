@@ -10,6 +10,7 @@ Redmine::Plugin.register :redmine_work_wechat do
   author_url 'https://mingming.wang'
 
   settings default: { 'enabled' => false, 'corpid' => '', 'agentId' => '', 'secret' => '', 'user_relation' => 'email',
-                      'open_in_default_browser' => false },
+                      'open_in_default_browser' => false, 'notification_include_details_size' => 200,
+                      'notification_include_details' => true },
            partial: 'settings/work_wechat_settings'
 end
