@@ -2,6 +2,7 @@ module RedmineWorkWechat
   module Helper
     include IssuesHelper
     include CustomFieldsHelper
+    require 'json'
 
     def extract_user_ids(users)
       return [] if users.nil? || !users.is_a?(Array) || users.empty?
@@ -11,7 +12,8 @@ module RedmineWorkWechat
 
       user_ids = []
       users.each do |user|
-        user_ids << user[field] if user[field].present? && !user[field].blank?
+        field_val = field == 'mail' ? user.mail : user[field]
+        user_ids << field_val if field_val.present? && !field_val.blank?
       end
 
       user_ids
